@@ -15,15 +15,6 @@ if st.button("Calculate"):
         end_date = datetime.today()
         start_date = end_date - timedelta(days=5*365)
         
-        st.write(f"Debug - Start Date: {start_date.strftime('%Y-%m-%d')}")
-        st.write(f"Debug - End Date: {end_date.strftime('%Y-%m-%d')}")
-
-        # Removed custom session with User-Agent as it might cause issues
-        # session = requests.Session()
-        # session.headers.update({
-        #     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-        # })
-
         # Use the built-in download function without custom session
         with st.spinner("Downloading stock data..."):
             stock_data = yf.download(
@@ -32,9 +23,6 @@ if st.button("Calculate"):
                 end=end_date,
                 progress=False
             )
-            # Debug: Show raw stock data
-            st.write("Debug - Stock Data Head:", stock_data.head(3))
-            st.write("Debug - Stock Data Tail:", stock_data.tail(3))
 
         with st.spinner("Downloading index data..."):
             index_data = yf.download(
@@ -43,11 +31,7 @@ if st.button("Calculate"):
                 end=end_date,
                 progress=False
             )
-            st.write("Debug - Index Data Head:", index_data.head(3))
-            st.write("Debug - Index Data Tail:", index_data.tail(3))
-
-        st.write(f"Debug - Stock data rows: {len(stock_data)}, Index data rows: {len(index_data)}")
-        
+ 
         if stock_data.empty:
             st.error(f"No stock data for {stock_ticker}. Check ticker on Yahoo Finance.")
             st.stop()
